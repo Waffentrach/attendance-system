@@ -33,5 +33,12 @@ router.get("/", requireAuth, requireRole("admin"), async (req, res) => {
     res.status(500).json({ message: "Помилка при отриманні дітей", error });
   }
 });
-
+router.delete("/:id", requireAuth, requireRole("admin"), async (req, res) => {
+  try {
+    await Child.findByIdAndDelete(req.params.id);
+    res.json({ message: "Дитину видалено" });
+  } catch (error) {
+    res.status(500).json({ message: "Помилка при видаленні дитини", error });
+  }
+});
 module.exports = router;
