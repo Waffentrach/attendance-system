@@ -17,7 +17,7 @@ const requireAuth = async (req, res, next) => {
       return res.status(401).json({ message: "Користувач не знайдений" });
     }
 
-    req.user = user; // Додаємо користувача до запиту
+    req.user = user;
     next();
   } catch (err) {
     res.status(401).json({ message: "Недійсний токен" });
