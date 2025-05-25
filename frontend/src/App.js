@@ -8,6 +8,9 @@ import UserManagementPage from "./pages/UserManagementPage";
 import GroupManagementPage from "./pages/GroupManagementPage";
 import ChildrenManagementPage from "./pages/ChildrenManagementPage";
 import AttendanceManagementPage from "./pages/AttendanceManagementPage";
+import TeacherJournalPage from "./pages/TeacherJournalPage";
+import ParentDashboardPage from "./pages/ParentDashboardPage";
+import SendNotificationPage from "./pages/SendNotificationPage";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -30,13 +33,7 @@ function App() {
           path="/"
           element={user ? <HomePage /> : <Navigate to="/login" />}
         />
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/admin"
-          element={
-            user?.role === "admin" ? <AdminDashboard /> : <Navigate to="/" />
-          }
-        />
+
         <Route
           path="/admin/users"
           element={
@@ -77,8 +74,38 @@ function App() {
             )
           }
         />
+        <Route
+          path="/parent"
+          element={
+            user?.role === "parent" ? (
+              <ParentDashboardPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/teacher/notify"
+          element={
+            user?.role === "teacher" ? (
+              <SendNotificationPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
 
         {/* teacher routes will go here */}
+        <Route
+          path="/journal"
+          element={
+            user?.role === "teacher" ? (
+              <TeacherJournalPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

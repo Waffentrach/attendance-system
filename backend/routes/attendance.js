@@ -6,6 +6,8 @@ const Attendance = require("../models/Attendance");
 const { Parser } = require("json2csv");
 const PDFDocument = require("pdfkit");
 const path = require("path");
+const tokenFromQuery = require("../middleware/tokenFromQuery");
+const Group = require("../models/Group");
 
 router.post("/", requireAuth, async (req, res) => {
   try {
@@ -18,7 +20,7 @@ router.post("/", requireAuth, async (req, res) => {
     const attendance = new Attendance({
       date,
       group: groupId,
-      children: childrenIds,
+      children: childrenIds.map((id) => ({ child: id, reason: null })),
     });
 
     await attendance.save();
@@ -31,8 +33,8 @@ router.post("/", requireAuth, async (req, res) => {
 router.get("/", requireAuth, requireRole("admin"), async (req, res) => {
   try {
     const records = await Attendance.find()
-      .populate({ path: "group", select: "name" })
-      .populate({ path: "children", select: "fullName" });
+      .populate("group", "name")
+      .populate("children.child", "fullName");
 
     res.json(records);
   } catch (error) {
@@ -42,28 +44,31 @@ router.get("/", requireAuth, requireRole("admin"), async (req, res) => {
 
 router.get(
   "/export/csv",
+  tokenFromQuery,
   requireAuth,
   requireRole("admin"),
   async (req, res) => {
     try {
       const records = await Attendance.find()
         .populate("group", "name")
-        .populate("children", "fullName");
+        .populate("children.child", "fullName");
 
       const csvData = records.map((record) => {
         return {
           date: record.date.toISOString().split("T")[0],
           group: record.group?.name || "—",
-          children: record.children.map((c) => c.fullName).join(", "),
+          children: record.children
+            .map((c) => c.child?.fullName || "")
+            .join(", "),
         };
       });
 
       const parser = new Parser({ fields: ["date", "group", "children"] });
       const csv = parser.parse(csvData);
 
-      res.header("Content-Type", "text/csv");
+      res.header("Content-Type", "text/csv ; charset=utf-8");
       res.attachment("attendance.csv");
-      res.send(csv);
+      res.send("\uFEFF" + csv);
     } catch (error) {
       res.status(500).json({ message: "Помилка при експорті CSV", error });
     }
@@ -71,13 +76,14 @@ router.get(
 );
 router.get(
   "/export/pdf",
+  tokenFromQuery,
   requireAuth,
   requireRole("admin"),
   async (req, res) => {
     try {
       const records = await Attendance.find()
         .populate("group", "name")
-        .populate("children", "fullName");
+        .populate("children.child", "fullName");
 
       const doc = new PDFDocument();
       const filename = `attendance_${Date.now()}.pdf`;
@@ -104,7 +110,7 @@ router.get(
           .text(
             `Діти: ${
               record.children.length > 0
-                ? record.children.map((c) => c.fullName).join(", ")
+                ? record.children.map((c) => c.child?.fullName || "").join(", ")
                 : "немає"
             }`
           );
@@ -120,4 +126,56 @@ router.get(
     }
   }
 );
+// 📌 Журнал для своєї групи (викладач)
+router.get(
+  "/my/teacher",
+  requireAuth,
+  requireRole("teacher"),
+  async (req, res) => {
+    try {
+      const group = await Group.findOne({ teacher: req.user._id });
+
+      if (!group) {
+        return res.status(404).json({ message: "Групу не знайдено" });
+      }
+
+      const records = await Attendance.find({ group: group._id })
+        .populate("children.child", "fullName")
+        .sort({ date: -1 });
+
+      res.json(records);
+    } catch (error) {
+      res.status(500).json({ message: "Помилка при отриманні журналу", error });
+    }
+  }
+);
+
+// 📌 Журнал для батьків
+router.get(
+  "/my/parent",
+  requireAuth,
+  requireRole("parent"),
+  async (req, res) => {
+    console.log("📩 GET /api/attendance/my/parent");
+    try {
+      const children = await require("../models/Child")
+        .find({ parent: req.user._id })
+        .select("_id");
+      const childIds = children.map((c) => c._id);
+
+      const records = await Attendance.find({
+        "children.child": { $in: childIds },
+      })
+        .populate("group", "name")
+        .populate("children.child", "fullName")
+        .sort({ date: -1 });
+
+      res.json(records);
+    } catch (error) {
+      console.error("❌ Error in /my/parent:", error);
+      res.status(500).json({ message: "Помилка при отриманні журналу", error });
+    }
+  }
+);
+
 module.exports = router;

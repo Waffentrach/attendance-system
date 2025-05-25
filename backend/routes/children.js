@@ -6,7 +6,7 @@ const Child = require("../models/Child");
 
 router.post("/", requireAuth, requireRole("admin"), async (req, res) => {
   try {
-    const { fullName, birthDate, groupId } = req.body;
+    const { fullName, birthDate, groupId, parentId } = req.body;
 
     if (!fullName || !birthDate || !groupId) {
       return res.status(400).json({ message: "Всі поля обовʼязкові" });
@@ -16,6 +16,7 @@ router.post("/", requireAuth, requireRole("admin"), async (req, res) => {
       fullName,
       birthDate,
       group: groupId,
+      parent: parentId,
     });
 
     await child.save();
@@ -41,4 +42,16 @@ router.delete("/:id", requireAuth, requireRole("admin"), async (req, res) => {
     res.status(500).json({ message: "Помилка при видаленні дитини", error });
   }
 });
+router.get("/my", requireAuth, requireRole("parent"), async (req, res) => {
+  try {
+    const children = await Child.find({ parent: req.user._id }).populate(
+      "group",
+      "name"
+    );
+    res.json(children);
+  } catch (error) {
+    res.status(500).json({ message: "Помилка при отриманні дітей", error });
+  }
+});
+
 module.exports = router;

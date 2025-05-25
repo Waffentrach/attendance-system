@@ -1,22 +1,21 @@
-import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.role === "admin") {
-      navigate("/admin");
-    }
-    if (user?.role === "teacher") {
-      // Тут буде сторінка вихователя (згодом)
-      navigate("/journal");
-    }
+    if (!user) return;
+
+    const role = user.role;
+    if (role === "admin") navigate("/admin", { replace: true });
+    else if (role === "teacher") navigate("/journal", { replace: true });
+    else if (role === "parent") navigate("/parent", { replace: true });
   }, [user, navigate]);
 
-  return <p>Завантаження...</p>; // тимчасово
+  return <h1>Завантаження...</h1>;
 };
 
 export default HomePage;

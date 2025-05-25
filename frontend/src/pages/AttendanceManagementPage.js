@@ -19,11 +19,17 @@ const AttendanceManagementPage = () => {
   };
 
   const exportCSV = () => {
-    window.open("http://localhost:5000/api/attendance/export/csv", "_blank");
+    window.open(
+      `http://localhost:5000/api/attendance/export/csv?token=${token}`,
+      `_blank`
+    );
   };
 
   const exportPDF = () => {
-    window.open("http://localhost:5000/api/attendance/export/pdf", "_blank");
+    window.open(
+      `http://localhost:5000/api/attendance/export/pdf?token=${token}`,
+      `_blank`
+    );
   };
 
   useEffect(() => {
@@ -56,7 +62,7 @@ const AttendanceManagementPage = () => {
               <td>{r.group?.name || "—"}</td>
               <td>
                 {r.children.length > 0
-                  ? r.children.map((c) => c.fullName).join(", ")
+                  ? r.children.map((c) => c.child?.fullName || "—").join(", ")
                   : "немає"}
               </td>
             </tr>

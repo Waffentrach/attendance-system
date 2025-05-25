@@ -45,6 +45,7 @@ const GroupManagementPage = () => {
       await axios.delete(`http://localhost:5000/api/groups/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      fetchGroups();
       setGroups(groups.filter((g) => g._id !== id));
     } catch (err) {
       alert("Помилка при видаленні");

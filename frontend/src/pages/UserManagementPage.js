@@ -77,6 +77,7 @@ const UserManagementPage = () => {
                 >
                   <option value="admin">admin</option>
                   <option value="teacher">teacher</option>
+                  <option value="parent">parent</option>
                 </select>
               </td>
               <td>

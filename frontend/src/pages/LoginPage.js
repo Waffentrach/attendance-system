@@ -21,7 +21,7 @@ const LoginPage = () => {
       });
 
       login(res.data.user, res.data.token);
-
+      navigate("/");
       if (res.data.user.role === "admin") {
         navigate("/admin");
       } else if (res.data.user.role === "teacher") {
