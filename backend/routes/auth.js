@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 router.post("/register", async (req, res) => {
+  console.log("➡️ Реєстрація користувача: ", req.body);
   try {
     const { email, password, role } = req.body;
 
@@ -19,9 +20,11 @@ router.post("/register", async (req, res) => {
 
     const newUser = new User({ email, password: hashedPassword, role });
     await newUser.save();
+    console.log("✅ Користувача збережено:", newUser);
 
     res.status(201).json({ message: "Користувача створено успішно" });
   } catch (err) {
+    console.error("❌ Помилка при реєстрації:", error);
     res.status(500).json({
       message: "Помилка при створенні користувача",
       error: err.message,

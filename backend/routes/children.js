@@ -28,7 +28,9 @@ router.post("/", requireAuth, requireRole("admin"), async (req, res) => {
 
 router.get("/", requireAuth, requireRole("admin"), async (req, res) => {
   try {
-    const children = await Child.find().populate("group", "name");
+    const children = await Child.find()
+      .populate("group", "name")
+      .populate("parent", "email");
     res.json(children);
   } catch (error) {
     res.status(500).json({ message: "Помилка при отриманні дітей", error });
@@ -53,5 +55,29 @@ router.get("/my", requireAuth, requireRole("parent"), async (req, res) => {
     res.status(500).json({ message: "Помилка при отриманні дітей", error });
   }
 });
+// routes/children.js
+router.patch(
+  "/:id/assign-parent",
+  requireAuth,
+  requireRole("admin"), // або teacher
+  async (req, res) => {
+    const { parentId } = req.body;
+
+    try {
+      const child = await Child.findByIdAndUpdate(
+        req.params.id,
+        { parent: parentId },
+        { new: true }
+      ).populate("parent", "email");
+
+      if (!child)
+        return res.status(404).json({ message: "Дитину не знайдено" });
+
+      res.json({ message: "Батька призначено", child });
+    } catch (err) {
+      res.status(500).json({ message: "Помилка при оновленні", error: err });
+    }
+  }
+);
 
 module.exports = router;

@@ -12,6 +12,7 @@ import TeacherJournalPage from "./pages/TeacherJournalPage";
 import ParentDashboardPage from "./pages/ParentDashboardPage";
 import SendNotificationPage from "./pages/SendNotificationPage";
 
+<button className="btn btn-primary">Перевірка Bootstrap</button>;
 function App() {
   const { user } = useContext(AuthContext);
 

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const attendanceRoutes = require("./routes/attendance");
+const childrenRoutes = require("./routes/children");
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/groups", require("./routes/groups"));
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/notifications", require("./routes/notifications"));
+app.use("/api/children", childrenRoutes);
 
 // Підключення до бази даних і запуск сервера
 mongoose

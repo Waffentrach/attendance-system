@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { Container, Form, Button, Alert, Card } from "react-bootstrap";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -22,48 +23,64 @@ const LoginPage = () => {
 
       login(res.data.user, res.data.token);
       navigate("/");
-      if (res.data.user.role === "admin") {
-        navigate("/admin");
-      } else if (res.data.user.role === "teacher") {
-        navigate("/");
-      }
     } catch (err) {
       setError(err.response?.data?.message || "Помилка при вході");
     }
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "100px auto" }}>
-      <h2>Вхід</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ marginTop: "1rem" }}>
-          <label>Пароль:</label>
-          <br />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: "100%" }}
-          />
-        </div>
-        {error && <p style={{ color: "red", marginTop: "1rem" }}>{error}</p>}
-        <button type="submit" style={{ marginTop: "1.5rem" }}>
-          Увійти
-        </button>
-      </form>
-    </div>
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "100vh" }}
+    >
+      <Card
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          padding: "2rem",
+          borderRadius: "1rem",
+          backgroundColor: "#fff7f1",
+        }}
+      >
+        <h3 className="text-center mb-4" style={{ color: "#6f42c1" }}>
+          Вхід
+        </h3>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Label>Електронна пошта</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Введіть email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Label>Пароль</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Введіть пароль"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          {error && <Alert variant="danger">{error}</Alert>}
+
+          <Button
+            variant="warning"
+            type="submit"
+            className="w-100"
+            style={{ backgroundColor: "#ffc107", borderColor: "#ffc107" }}
+          >
+            Увійти
+          </Button>
+        </Form>
+      </Card>
+    </Container>
   );
 };
 

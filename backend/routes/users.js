@@ -27,5 +27,19 @@ router.delete("/:id", requireAuth, requireRole("admin"), async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   res.json({ message: "Користувача видалено" });
 });
+// 📁 routes/users.js
+router.get(
+  "/parents",
+  requireAuth,
+  requireRole("teacher"),
+  async (req, res) => {
+    try {
+      const parents = await User.find({ role: "parent" }).select("_id email");
+      res.json(parents);
+    } catch (err) {
+      res.status(500).json({ message: "Помилка при отриманні батьків" });
+    }
+  }
+);
 
 module.exports = router;

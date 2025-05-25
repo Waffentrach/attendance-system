@@ -1,6 +1,16 @@
+// Оновлений стиль з Bootstrap
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Form,
+  Button,
+  Card,
+} from "react-bootstrap";
 
 const GroupManagementPage = () => {
   const { token } = useContext(AuthContext);
@@ -45,7 +55,6 @@ const GroupManagementPage = () => {
       await axios.delete(`http://localhost:5000/api/groups/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      fetchGroups();
       setGroups(groups.filter((g) => g._id !== id));
     } catch (err) {
       alert("Помилка при видаленні");
@@ -58,32 +67,39 @@ const GroupManagementPage = () => {
   }, []);
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Групи</h2>
-      <form onSubmit={handleCreateGroup} style={{ marginBottom: "2rem" }}>
-        <input
-          type="text"
-          placeholder="Назва групи"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <select
-          value={teacherId}
-          onChange={(e) => setTeacherId(e.target.value)}
-          required
-        >
-          <option value="">-- Виберіть вихователя --</option>
-          {teachers.map((t) => (
-            <option key={t._id} value={t._id}>
-              {t.email}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Створити</button>
-      </form>
+    <Container className="py-4">
+      <h2 className="mb-4 text-center">Групи</h2>
 
-      <table border="1" cellPadding="8">
+      <Card className="mb-4">
+        <Card.Body>
+          <Form onSubmit={handleCreateGroup} className="d-flex flex-wrap gap-2">
+            <Form.Control
+              type="text"
+              placeholder="Назва групи"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <Form.Select
+              value={teacherId}
+              onChange={(e) => setTeacherId(e.target.value)}
+              required
+            >
+              <option value="">-- Виберіть вихователя --</option>
+              {teachers.map((t) => (
+                <option key={t._id} value={t._id}>
+                  {t.email}
+                </option>
+              ))}
+            </Form.Select>
+            <Button type="submit" variant="primary">
+              Створити
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Назва</th>
@@ -97,13 +113,19 @@ const GroupManagementPage = () => {
               <td>{g.name}</td>
               <td>{g.teacher?.email || "—"}</td>
               <td>
-                <button onClick={() => handleDelete(g._id)}>🗑 Видалити</button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleDelete(g._id)}
+                >
+                  🗑 Видалити
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Container>
   );
 };
 

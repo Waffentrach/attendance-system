@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { Container, Table, Button, Row, Col, Card } from "react-bootstrap";
 
 const AttendanceManagementPage = () => {
   const { token } = useContext(AuthContext);
@@ -37,39 +38,51 @@ const AttendanceManagementPage = () => {
   }, []);
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Журнал відвідуваності</h2>
+    <Container className="py-4">
+      <h2 className="text-center mb-4">Журнал відвідуваності</h2>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <button onClick={exportCSV}>⬇️ Експорт у CSV</button>
-        <button onClick={exportPDF} style={{ marginLeft: "1rem" }}>
-          📄 Експорт у PDF
-        </button>
-      </div>
+      <Row className="mb-3">
+        <Col md="auto">
+          <Button variant="warning" onClick={exportCSV}>
+            ⬇️ Експорт у CSV
+          </Button>
+        </Col>
+        <Col md="auto">
+          <Button variant="info" onClick={exportPDF}>
+            📄 Експорт у PDF
+          </Button>
+        </Col>
+      </Row>
 
-      <table border="1" cellPadding="8">
-        <thead>
-          <tr>
-            <th>Дата</th>
-            <th>Група</th>
-            <th>Діти</th>
-          </tr>
-        </thead>
-        <tbody>
-          {records.map((r) => (
-            <tr key={r._id}>
-              <td>{r.date.split("T")[0]}</td>
-              <td>{r.group?.name || "—"}</td>
-              <td>
-                {r.children.length > 0
-                  ? r.children.map((c) => c.child?.fullName || "—").join(", ")
-                  : "немає"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <Card>
+        <Card.Body>
+          <Table bordered hover responsive>
+            <thead className="table-light">
+              <tr>
+                <th>Дата</th>
+                <th>Група</th>
+                <th>Діти</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((r) => (
+                <tr key={r._id}>
+                  <td>{r.date.split("T")[0]}</td>
+                  <td>{r.group?.name || "—"}</td>
+                  <td>
+                    {r.children.length > 0
+                      ? r.children
+                          .map((c) => c.child?.fullName || "—")
+                          .join(", ")
+                      : "немає"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

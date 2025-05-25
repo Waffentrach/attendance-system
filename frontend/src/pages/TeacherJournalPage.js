@@ -2,6 +2,16 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  Card,
+  Form,
+  Button,
+  Table,
+  Row,
+  Col,
+  Alert,
+} from "react-bootstrap";
 
 const TeacherJournalPage = () => {
   const { token } = useContext(AuthContext);
@@ -9,6 +19,7 @@ const TeacherJournalPage = () => {
   const [children, setChildren] = useState([]);
   const [date, setDate] = useState("");
   const [selectedChildren, setSelectedChildren] = useState([]);
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
   const fetchRecords = async () => {
@@ -50,7 +61,9 @@ const TeacherJournalPage = () => {
 
       setDate("");
       setSelectedChildren([]);
+      setSuccess("Запис збережено успішно!");
       fetchRecords();
+      setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       alert("Помилка при створенні запису");
     }
@@ -68,66 +81,90 @@ const TeacherJournalPage = () => {
   }, []);
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Мій журнал</h2>
+    <Container className="py-4">
+      <Card style={{ backgroundColor: "#fff0f5" }}>
+        <Card.Body>
+          <Card.Title style={{ color: "#6f42c1" }}>Мій журнал</Card.Title>
 
-      <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
-        <label>Дата:</label>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
-        <div style={{ marginTop: "1rem" }}>
-          <p>Виберіть присутніх дітей:</p>
-          {children.map((child) => (
-            <div key={child._id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedChildren.includes(child._id)}
-                  onChange={() => handleCheckboxChange(child._id)}
-                />
-                {child.fullName}
-              </label>
-            </div>
-          ))}
-        </div>
-        <button type="submit" style={{ marginTop: "1rem" }}>
-          Зберегти
-        </button>
-        <button
-          type="button"
-          style={{ marginTop: "1rem", marginLeft: "1rem" }}
-          onClick={() => navigate("/teacher/notify")}
-        >
-          📨 Надіслати повідомлення
-        </button>
-      </form>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Дата</Form.Label>
+              <Form.Control
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-      <h3>Історія</h3>
-      <table border="1" cellPadding="8">
-        <thead>
-          <tr>
-            <th>Дата</th>
-            <th>Діти</th>
-          </tr>
-        </thead>
-        <tbody>
-          {records.map((r) => (
-            <tr key={r._id}>
-              <td>{r.date.split("T")[0]}</td>
-              <td>
-                {r.children.length > 0
-                  ? r.children.map((c) => c.child?.fullName).join(", ")
-                  : "немає"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            <Form.Group className="mb-3">
+              <Form.Label>Присутні діти</Form.Label>
+              <div
+                className="mb-2"
+                style={{ maxHeight: 200, overflowY: "auto" }}
+              >
+                {children.map((child) => (
+                  <Form.Check
+                    key={child._id}
+                    type="checkbox"
+                    label={child.fullName}
+                    checked={selectedChildren.includes(child._id)}
+                    onChange={() => handleCheckboxChange(child._id)}
+                  />
+                ))}
+              </div>
+            </Form.Group>
+
+            <Row>
+              <Col>
+                <Button variant="warning" type="submit">
+                  Зберегти
+                </Button>
+                <Button
+                  variant="outline-primary"
+                  className="ms-3"
+                  onClick={() => navigate("/teacher/notify")}
+                >
+                  📨 Надіслати повідомлення
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+
+          {success && (
+            <Alert variant="success" className="mt-3">
+              {success}
+            </Alert>
+          )}
+        </Card.Body>
+      </Card>
+
+      <Card className="mt-4" style={{ backgroundColor: "#fdfde3" }}>
+        <Card.Body>
+          <Card.Title style={{ color: "#d63384" }}>Історія</Card.Title>
+          <Table bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Дата</th>
+                <th>Діти</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((r) => (
+                <tr key={r._id}>
+                  <td>{r.date.split("T")[0]}</td>
+                  <td>
+                    {r.children.length > 0
+                      ? r.children.map((c) => c.child?.fullName).join(", ")
+                      : "немає"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["admin", "teacher", "parent"],
     default: "teacher",
+    required: true,
   },
 });
 

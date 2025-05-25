@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
 const SendNotificationPage = () => {
   const { token } = useContext(AuthContext);
@@ -10,11 +11,10 @@ const SendNotificationPage = () => {
   const [success, setSuccess] = useState("");
 
   const fetchParents = async () => {
-    const res = await axios.get("http://localhost:5000/api/users", {
+    const res = await axios.get("http://localhost:5000/api/users/parents", {
       headers: { Authorization: `Bearer ${token}` },
     });
-    const onlyParents = res.data.filter((u) => u.role === "parent");
-    setParents(onlyParents);
+    setParents(res.data);
   };
 
   const handleSubmit = async (e) => {
@@ -30,6 +30,7 @@ const SendNotificationPage = () => {
       setSuccess("Повідомлення надіслано успішно!");
       setMessage("");
       setSelectedParent("");
+      setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       alert("Не вдалося надіслати повідомлення");
     }
@@ -40,45 +41,59 @@ const SendNotificationPage = () => {
   }, []);
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Надіслати повідомлення батькам</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Оберіть батька:</label>
-        <br />
-        <select
-          value={selectedParent}
-          onChange={(e) => setSelectedParent(e.target.value)}
-          required
-        >
-          <option value="">-- Виберіть --</option>
-          {parents.map((p) => (
-            <option key={p._id} value={p._id}>
-              {p.email}
-            </option>
-          ))}
-        </select>
+    <Container className="py-4">
+      <Card style={{ backgroundColor: "#fff9e6" }}>
+        <Card.Body>
+          <Card.Title style={{ color: "#6f42c1" }}>
+            Надіслати повідомлення батькам
+          </Card.Title>
 
-        <div style={{ marginTop: "1rem" }}>
-          <label>Повідомлення:</label>
-          <br />
-          <textarea
-            rows="4"
-            style={{ width: "100%" }}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-          />
-        </div>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Оберіть батька</Form.Label>
+              <Form.Select
+                value={selectedParent}
+                onChange={(e) => setSelectedParent(e.target.value)}
+                required
+              >
+                <option value="">-- Виберіть --</option>
+                {parents.map((p) => (
+                  <option key={p._id} value={p._id}>
+                    {p.email}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
 
-        <button type="submit" style={{ marginTop: "1rem" }}>
-          Надіслати
-        </button>
-      </form>
+            <Form.Group className="mb-3">
+              <Form.Label>Повідомлення</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={4}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+                placeholder="Введіть текст повідомлення"
+              />
+            </Form.Group>
 
-      {success && (
-        <p style={{ color: "green", marginTop: "1rem" }}>{success}</p>
-      )}
-    </div>
+            <Button
+              variant="warning"
+              type="submit"
+              style={{ backgroundColor: "#ffc107", color: "#000" }}
+            >
+              Надіслати
+            </Button>
+          </Form>
+
+          {success && (
+            <Alert variant="success" className="mt-3">
+              {success}
+            </Alert>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
