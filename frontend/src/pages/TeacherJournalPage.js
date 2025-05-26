@@ -11,10 +11,11 @@ import {
   Row,
   Col,
   Alert,
+  Nav,
 } from "react-bootstrap";
 
 const TeacherJournalPage = () => {
-  const { token } = useContext(AuthContext);
+  const { token, logout } = useContext(AuthContext);
   const [records, setRecords] = useState([]);
   const [children, setChildren] = useState([]);
   const [date, setDate] = useState("");
@@ -82,6 +83,36 @@ const TeacherJournalPage = () => {
 
   return (
     <Container className="py-4">
+      {/* 🔁 Навігація */}
+      <Row className="align-items-center mb-3">
+        <Col>
+          <Nav variant="tabs" defaultActiveKey="/journal">
+            <Nav.Item>
+              <Nav.Link active onClick={() => navigate("/journal")}>
+                📔 Журнал
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link onClick={() => navigate("/teacher/events")}>
+                🎉 Події
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </Col>
+        <Col className="text-end">
+          <Button
+            variant="danger"
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+          >
+            🚪 Вийти
+          </Button>
+        </Col>
+      </Row>
+
+      {/* 📋 Журнал */}
       <Card style={{ backgroundColor: "#fff0f5" }}>
         <Card.Body>
           <Card.Title style={{ color: "#6f42c1" }}>Мій журнал</Card.Title>
@@ -139,6 +170,7 @@ const TeacherJournalPage = () => {
         </Card.Body>
       </Card>
 
+      {/* 📚 Історія */}
       <Card className="mt-4" style={{ backgroundColor: "#fdfde3" }}>
         <Card.Body>
           <Card.Title style={{ color: "#d63384" }}>Історія</Card.Title>

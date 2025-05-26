@@ -11,6 +11,7 @@ import AttendanceManagementPage from "./pages/AttendanceManagementPage";
 import TeacherJournalPage from "./pages/TeacherJournalPage";
 import ParentDashboardPage from "./pages/ParentDashboardPage";
 import SendNotificationPage from "./pages/SendNotificationPage";
+import TeacherEventsPage from "./pages/TeacherEventsPage";
 
 <button className="btn btn-primary">Перевірка Bootstrap</button>;
 function App() {
@@ -97,6 +98,7 @@ function App() {
         />
 
         {/* teacher routes will go here */}
+        <Route path="/teacher/events" element={<TeacherEventsPage />} />
         <Route
           path="/journal"
           element={
