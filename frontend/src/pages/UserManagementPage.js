@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import { Container, Card, Table, Button, Alert, Form } from "react-bootstrap";
-
+import AdminNavbar from "../pages/AdminNavbar";
 const UserManagementPage = () => {
   const { token } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
@@ -51,6 +51,7 @@ const UserManagementPage = () => {
 
   return (
     <Container className="py-4">
+      <AdminNavbar active="users" />
       <Card style={{ backgroundColor: "#fffbea" }}>
         <Card.Body>
           <Card.Title style={{ color: "#6f42c1" }}>Користувачі</Card.Title>

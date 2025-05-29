@@ -10,6 +10,7 @@ import {
   Col,
   Card,
 } from "react-bootstrap";
+import AdminNavbar from "../pages/AdminNavbar";
 
 const ChildrenManagementPage = () => {
   const { token } = useContext(AuthContext);
@@ -89,6 +90,8 @@ const ChildrenManagementPage = () => {
 
   return (
     <Container className="py-4">
+      <AdminNavbar active="children" />
+
       <h2 className="mb-4 text-center">Управління дітьми</h2>
 
       <Card className="mb-4 shadow-sm">

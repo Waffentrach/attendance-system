@@ -11,6 +11,7 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
+import AdminNavbar from "../pages/AdminNavbar";
 
 const GroupManagementPage = () => {
   const { token } = useContext(AuthContext);
@@ -68,8 +69,8 @@ const GroupManagementPage = () => {
 
   return (
     <Container className="py-4">
+      <AdminNavbar active="groups" />
       <h2 className="mb-4 text-center">Групи</h2>
-
       <Card className="mb-4">
         <Card.Body>
           <Form onSubmit={handleCreateGroup} className="d-flex flex-wrap gap-2">
@@ -98,7 +99,6 @@ const GroupManagementPage = () => {
           </Form>
         </Card.Body>
       </Card>
-
       <Table striped bordered hover responsive>
         <thead>
           <tr>

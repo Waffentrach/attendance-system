@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import { Container, Table, Button, Row, Col, Card } from "react-bootstrap";
+import AdminNavbar from "../pages/AdminNavbar";
 
 const AttendanceManagementPage = () => {
   const { token } = useContext(AuthContext);
@@ -39,6 +40,7 @@ const AttendanceManagementPage = () => {
 
   return (
     <Container className="py-4">
+      <AdminNavbar active="attendance" />
       <h2 className="text-center mb-4">Журнал відвідуваності</h2>
 
       <Row className="mb-3">
