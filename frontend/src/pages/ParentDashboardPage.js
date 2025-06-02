@@ -21,11 +21,11 @@ const ParentDashboardPage = () => {
     <Container className="py-4">
       <Row className="align-items-center mb-3">
         <Col>
-          <h2 className="text-center">👨‍👩‍👧 Кабінет батьків</h2>
+          <h2 className="text-center">Кабінет батьків</h2>
         </Col>
         <Col xs="auto">
           <Button variant="danger" onClick={handleLogout}>
-            🚪 Вийти
+            Вийти
           </Button>
         </Col>
       </Row>
@@ -36,16 +36,16 @@ const ParentDashboardPage = () => {
         className="mb-3"
         justify
       >
-        <Tab eventKey="children" title="👧 Діти">
+        <Tab eventKey="children" title="Діти">
           <ParentChildren />
         </Tab>
-        <Tab eventKey="notifications" title="📩 Повідомлення">
+        <Tab eventKey="notifications" title="Повідомлення">
           <ParentNotifications />
         </Tab>
-        <Tab eventKey="attendance" title="📅 Відвідуваність">
+        <Tab eventKey="attendance" title="Відвідуваність">
           <ParentAttendance />
         </Tab>
-        <Tab eventKey="events" title="🎉 Події">
+        <Tab eventKey="events" title="Події">
           <ParentEvents />
         </Tab>
       </Tabs>

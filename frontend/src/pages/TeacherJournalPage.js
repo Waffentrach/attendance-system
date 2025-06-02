@@ -83,18 +83,18 @@ const TeacherJournalPage = () => {
 
   return (
     <Container className="py-4">
-      {/* 🔁 Навігація */}
+      
       <Row className="align-items-center mb-3">
         <Col>
           <Nav variant="tabs" defaultActiveKey="/journal">
             <Nav.Item>
               <Nav.Link active onClick={() => navigate("/journal")}>
-                📔 Журнал
+                Журнал
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link onClick={() => navigate("/teacher/events")}>
-                🎉 Події
+                Події
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -156,7 +156,7 @@ const TeacherJournalPage = () => {
                   className="ms-3"
                   onClick={() => navigate("/teacher/notify")}
                 >
-                  📨 Надіслати повідомлення
+                  Надіслати повідомлення
                 </Button>
               </Col>
             </Row>

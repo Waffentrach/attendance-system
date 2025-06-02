@@ -9,6 +9,7 @@ const path = require("path");
 const tokenFromQuery = require("../middleware/tokenFromQuery");
 const Group = require("../models/Group");
 
+
 router.post("/", requireAuth, async (req, res) => {
   try {
     const { date, groupId, childrenIds } = req.body;
@@ -29,6 +30,7 @@ router.post("/", requireAuth, async (req, res) => {
     res.status(500).json({ message: "Помилка при створенні запису", error });
   }
 });
+
 
 router.get("/", requireAuth, requireRole("admin"), async (req, res) => {
   try {
@@ -156,7 +158,7 @@ router.get(
   requireAuth,
   requireRole("parent"),
   async (req, res) => {
-    console.log("📩 GET /api/attendance/my/parent");
+    
     try {
       const children = await require("../models/Child")
         .find({ parent: req.user._id })

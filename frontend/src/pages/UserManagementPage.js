@@ -89,7 +89,7 @@ const UserManagementPage = () => {
                       size="sm"
                       onClick={() => handleDelete(u._id)}
                     >
-                      🗑 Видалити
+                      Видалити
                     </Button>
                   </td>
                 </tr>

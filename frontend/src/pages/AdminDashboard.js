@@ -36,12 +36,10 @@ const AdminDashboard = () => {
 
   return (
     <Container className="py-4">
-      {/* 🔝 Навігаційна панель адміністратора */}
       <AdminNavbar active="register" />
 
-      {/* 📥 Блок створення нового користувача */}
       <Card className="p-4 shadow-sm border-0">
-        <h5 className="mb-3">➕ Додати нового користувача</h5>
+        <h5 className="mb-3">Додати нового користувача</h5>
 
         <Form onSubmit={handleCreate}>
           <Form.Group className="mb-3">
@@ -78,7 +76,7 @@ const AdminDashboard = () => {
           </Form.Group>
 
           <Button variant="success" type="submit">
-            ✅ Створити
+            Створити
           </Button>
         </Form>
 

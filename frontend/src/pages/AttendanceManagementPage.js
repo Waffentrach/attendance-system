@@ -46,12 +46,12 @@ const AttendanceManagementPage = () => {
       <Row className="mb-3">
         <Col md="auto">
           <Button variant="warning" onClick={exportCSV}>
-            ⬇️ Експорт у CSV
+            ⬇Експорт у CSV
           </Button>
         </Col>
         <Col md="auto">
           <Button variant="info" onClick={exportPDF}>
-            📄 Експорт у PDF
+            Експорт у PDF
           </Button>
         </Col>
       </Row>

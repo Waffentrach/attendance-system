@@ -118,7 +118,7 @@ const GroupManagementPage = () => {
                   size="sm"
                   onClick={() => handleDelete(g._id)}
                 >
-                  🗑 Видалити
+                  Видалити
                 </Button>
               </td>
             </tr>

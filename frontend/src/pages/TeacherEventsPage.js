@@ -25,7 +25,11 @@ const TeacherEventsPage = () => {
 
     await axios.post(
       "http://localhost:5000/api/events",
-      { title, message: description, date },
+      {
+        title,
+        description,
+        date,
+      },
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
@@ -41,17 +45,14 @@ const TeacherEventsPage = () => {
 
   return (
     <Container className="py-4">
-      {/* 🔁 Верхня навігація */}
       <Row className="align-items-center mb-3">
         <Col>
           <Nav variant="tabs" defaultActiveKey="/teacher/events">
             <Nav.Item>
-              <Nav.Link onClick={() => navigate("/journal")}>
-                📔 Журнал
-              </Nav.Link>
+              <Nav.Link onClick={() => navigate("/journal")}>Журнал</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link active>🎉 Події</Nav.Link>
+              <Nav.Link active>Події</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
@@ -63,14 +64,13 @@ const TeacherEventsPage = () => {
               navigate("/login");
             }}
           >
-            🚪 Вийти
+            Вийти
           </Button>
         </Col>
       </Row>
 
-      {/* 📝 Форма додавання події */}
       <Card className="p-3 shadow-sm">
-        <h4>🎉 Події для батьків</h4>
+        <h4>Події для батьків</h4>
         <Form onSubmit={handleSubmit} className="mt-3">
           <Form.Group className="mb-2">
             <Form.Label>Назва події</Form.Label>
@@ -103,14 +103,13 @@ const TeacherEventsPage = () => {
           </Form.Group>
 
           <Button type="submit" variant="success">
-            ➕ Додати подію
+            Додати подію
           </Button>
         </Form>
       </Card>
 
-      {/* 📅 Список подій */}
       <Card className="mt-4 p-3 shadow-sm">
-        <h5>🗂 Заплановані події:</h5>
+        <h5>Заплановані події:</h5>
         {events.map((e) => (
           <Card key={e._id} className="my-2 bg-light">
             <Card.Body>

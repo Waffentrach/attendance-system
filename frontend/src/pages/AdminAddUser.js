@@ -35,7 +35,7 @@ const AdminAddUser = () => {
 
   return (
     <Card className="p-4 shadow-sm">
-      <h5 className="mb-3">➕ Додати нового користувача</h5>
+      <h5 className="mb-3">Додати нового користувача</h5>
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
@@ -70,7 +70,7 @@ const AdminAddUser = () => {
         </Form.Group>
 
         <Button type="submit" variant="success">
-          ✅ Створити
+          Створити
         </Button>
       </Form>
 

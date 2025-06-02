@@ -131,7 +131,7 @@ const ChildrenManagementPage = () => {
               </Col>
               <Col md={2}>
                 <Button type="submit" variant="warning" className="w-100">
-                  ➕ Додати
+                  Додати
                 </Button>
               </Col>
             </Row>
@@ -177,7 +177,7 @@ const ChildrenManagementPage = () => {
                       size="sm"
                       onClick={() => handleDelete(child._id)}
                     >
-                      🗑 Видалити
+                      Видалити
                     </Button>
                   </td>
                 </tr>
