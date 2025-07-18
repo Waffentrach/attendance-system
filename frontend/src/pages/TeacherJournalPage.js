@@ -102,7 +102,7 @@ const TeacherJournalPage = () => {
           style={{ marginTop: "1rem", marginLeft: "1rem" }}
           onClick={() => navigate("/teacher/notify")}
         >
-          📨 Надіслати повідомлення
+          Надіслати повідомлення
         </button>
       </form>
 

@@ -7,11 +7,9 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes (додамо згодом)
 app.use("/api/groups", require("./routes/groups"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/children", require("./routes/children"));
@@ -21,7 +19,6 @@ app.use("/api/groups", require("./routes/groups"));
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/notifications", require("./routes/notifications"));
 
-// Підключення до бази даних і запуск сервера
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

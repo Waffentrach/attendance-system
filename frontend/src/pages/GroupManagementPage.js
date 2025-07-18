@@ -97,7 +97,7 @@ const GroupManagementPage = () => {
               <td>{g.name}</td>
               <td>{g.teacher?.email || "—"}</td>
               <td>
-                <button onClick={() => handleDelete(g._id)}>🗑 Видалити</button>
+                <button onClick={() => handleDelete(g._id)}>Видалити</button>
               </td>
             </tr>
           ))}

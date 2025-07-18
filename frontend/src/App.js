@@ -95,7 +95,6 @@ function App() {
           }
         />
 
-        {/* teacher routes will go here */}
         <Route
           path="/journal"
           element={
